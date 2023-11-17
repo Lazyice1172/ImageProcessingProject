@@ -7,7 +7,8 @@ def filter_img(frame):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     blur = cv.GaussianBlur(gray, (5, 5), 0)
     _, thresh = cv.threshold(blur, 20, 255, cv.THRESH_BINARY)
-    dilated = cv.dilate(thresh, None, iterations=3)
+    eroded = cv.erode(thresh, None, iterations = 1)
+    dilated = cv.dilate(eroded, None, iterations = 2)
 
     return dilated
 
