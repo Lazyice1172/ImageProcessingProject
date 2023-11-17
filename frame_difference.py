@@ -37,8 +37,8 @@ while cap.isOpened():
     foregroundPart = cv.bitwise_and(frame1,frame1, mask=mask)
     # cv.drawContours(frame1, contours, -1, (0, 255, 0), 3)
 
-    cv.imshow("Frame", frame1)
-    cv.imshow("Mask", mask)
+    cv.imshow("Frame", cv.resize(frame1, None, fx=0.4, fy=0.4))
+    cv.imshow("Mask", cv.resize(foregroundPart, None, fx=0.4, fy=0.4))
 
     frame1 = frame2
     ret, frame2 = cap.read()
