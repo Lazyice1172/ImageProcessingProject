@@ -32,6 +32,8 @@ while cap.isOpened():
             continue
         cv.rectangle(frame1, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0), thickness=2)
 
+        cv.putText(frame1, 'Vehicle Detected', (x, y-10), cv.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,0), 1, cv.LINE_AA)
+        
     # cv.drawContours(frame1, contours, -1, (0, 255, 0), 3)
 
     cv.imshow("Frame", frame1)
