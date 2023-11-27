@@ -4,7 +4,6 @@ import cv2 as cv
 # Function
 def filter_img(frame):
     kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3))
-
     _, thresh = cv.threshold(frame, 244, 255, cv.THRESH_BINARY)
     thresh = cv.erode(thresh, kernel, iterations=2)
     dilated = cv.dilate(thresh, kernel, iterations=2)
@@ -22,12 +21,14 @@ def filter_img(frame):
 # Better shadow detect and accuracy
 object_detector = cv.createBackgroundSubtractorKNN(detectShadows=True)
 
-cap = cv.VideoCapture("videos/highway.mp4")
+cap = cv.VideoCapture("chosen_video.mp4")
 
 while True:
     ret, frame = cap.read()
 
+ 
     mask = object_detector.apply(frame)
+
     mask = filter_img(mask)
 
     contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
@@ -36,11 +37,12 @@ while True:
         if cv.contourArea(contour) < 100:
             continue
         cv.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0), thickness=2)
+        cv.putText(frame, 'Vehicle Detected', (x, y-10), cv.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,0), 1, cv.LINE_AA)
 
     # cv.drawContours(frame1, contours, -1, (0, 255, 0), 3)
 
-    cv.imshow("Frame", frame)
-    cv.imshow("Mask", mask)
+    cv.imshow("Frame", cv.resize(frame, None, fx=0.4, fy=0.4))
+    cv.imshow("Mask", cv.resize(mask, None, fx=0.4, fy=0.4))
 
     if cv.waitKey(50) == ord("q"):
         break

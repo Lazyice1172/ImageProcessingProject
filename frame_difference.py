@@ -14,7 +14,7 @@ def filter_img(frame):
 
 
 # Main
-cap = cv.VideoCapture("videos/highway.mp4")
+cap = cv.VideoCapture("chosen_video.mp4")
 
 ret, frame1 = cap.read()
 ret, frame2 = cap.read()
