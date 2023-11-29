@@ -5,15 +5,15 @@ import cv2 as cv
 # Function
 def filter_img(frame):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    blur = cv.GaussianBlur(gray, (5, 5), 0)
-    _, thresh = cv.threshold(blur, 20, 255, cv.THRESH_BINARY)
+    # blur = cv.GaussianBlur(gray, (5, 5), 0)
+    _, thresh = cv.threshold(gray, 20, 255, cv.THRESH_BINARY)
     dilated = cv.dilate(thresh, None, iterations=3)
 
     return dilated
 
 
 # Main
-cap = cv.VideoCapture("videos/highway.mp4")
+cap = cv.VideoCapture("videos/pexels_videos_2443793 (2160p).mp4")
 
 ret, frame1 = cap.read()
 ret, frame2 = cap.read()

@@ -22,7 +22,7 @@ def filter_img(frame):
 # Better shadow detect and accuracy
 object_detector = cv.createBackgroundSubtractorKNN(detectShadows=True)
 
-cap = cv.VideoCapture("videos/highway.mp4")
+cap = cv.VideoCapture("videos/production_id_4029952 (2160p).mp4")
 
 while True:
     ret, frame = cap.read()
@@ -33,7 +33,7 @@ while True:
     contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         (x, y, w, h) = cv.boundingRect(contour)
-        if cv.contourArea(contour) < 100:
+        if cv.contourArea(contour) < 500:
             continue
         cv.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0), thickness=2)
 
