@@ -1,6 +1,7 @@
 
 # Import file
 import cv2 as cv
+import numpy as np
 
 
 # Open the video file
