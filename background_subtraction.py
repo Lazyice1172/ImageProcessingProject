@@ -3,11 +3,11 @@ import cv2 as cv
 
 # Function
 def filter_img(frame):
+    # gets Morph Ellipse shapes -> elliptic shape 
     kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3))
-
-    _, thresh = cv.threshold(frame, 244, 255, cv.THRESH_BINARY)
-    thresh = cv.erode(thresh, kernel, iterations=2)
-    dilated = cv.dilate(thresh, kernel, iterations=2)
+    _, thresh = cv.threshold(frame, 250, 255, cv.THRESH_BINARY)
+    erode = cv.erode(thresh, kernel, iterations=2)
+    dilated = cv.dilate(erode, kernel, iterations=2)
 
     return dilated
 
@@ -25,22 +25,33 @@ object_detector = cv.createBackgroundSubtractorKNN(detectShadows=True)
 cap = cv.VideoCapture("videos/production_id_4029952 (2160p).mp4")
 
 while True:
+
     ret, frame = cap.read()
 
-    mask = object_detector.apply(frame)
-    mask = filter_img(mask)
+    #  Object detector proccesses the video to identify objects, in this case - vehicles
+    obj_detector = object_detector.apply(frame)
+
+    mask = filter_img(obj_detector)
 
     contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    
+    frameCopy = frame.copy()
+
     for contour in contours:
         (x, y, w, h) = cv.boundingRect(contour)
         if cv.contourArea(contour) < 500:
             continue
-        cv.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0), thickness=2)
+        (x, y, w, h) = cv.boundingRect(contour)
+
+        cv.rectangle(frameCopy, pt1=(x, y), pt2=(x + w, y + h), color=(0, 255, 0), thickness=2)
+        cv.putText(frameCopy, 'Vehicle Detected', (x, y-10), cv.FONT_HERSHEY_SIMPLEX, 0.3, (0,255,0), 1, cv.LINE_AA)
 
     # cv.drawContours(frame1, contours, -1, (0, 255, 0), 3)
 
-    cv.imshow("Frame", frame)
-    cv.imshow("Mask", mask)
+    foregroundPart = cv.bitwise_and(frame,frame, mask=mask)
+
+    cv.imshow("Frame", cv.resize(frameCopy, None, fx=0.4, fy=0.4))
+    cv.imshow("Mask", cv.resize(foregroundPart, None, fx=0.4, fy=0.4))
 
     if cv.waitKey(50) == ord("q"):
         break
