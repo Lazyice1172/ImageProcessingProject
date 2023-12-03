@@ -48,10 +48,10 @@ while True:
 
     # cv.drawContours(frame1, contours, -1, (0, 255, 0), 3)
 
-    foregroundPart = cv.bitwise_and(frame,frame, mask=mask)
+    # foregroundPart = cv.bitwise_and(frame,frame, mask=mask)
 
     cv.imshow("Frame", cv.resize(frameCopy, None, fx=0.4, fy=0.4))
-    cv.imshow("Mask", cv.resize(foregroundPart, None, fx=0.4, fy=0.4))
+    cv.imshow("Mask", cv.resize(mask, None, fx=0.4, fy=0.4))
 
     if cv.waitKey(50) == ord("q"):
         break
